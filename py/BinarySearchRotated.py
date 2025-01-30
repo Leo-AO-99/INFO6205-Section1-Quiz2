@@ -1,4 +1,4 @@
-def binary_search_rotated(arr, target, rotation_index):
+def binary_search_rotated(arr: list[int], target: int, rotation_index: int) -> bool:
     """
     Perform binary search on a rotated sorted array.
     
@@ -16,11 +16,29 @@ def binary_search_rotated(arr, target, rotation_index):
     :return: bool - True if the target is in the array, False otherwise.
     """
     
+    if len(arr) == 0:
+        return False
+    
     # TODO: Check if the rotation_index is 0, meaning the array is not rotated.
+    rotation_index %= len(arr)
+    if rotation_index == 0:
+        left_start = 0
+        left_end = len(arr) - 1
+        in_left = True
+    else:
+        # TODO: Determine which half (before or after rotation_index) the target belongs to.
+        left_start = 0
+        right_start = rotation_index
+        
+        left_end = rotation_index - 1
+        right_end = len(arr) - 1
+        
+        in_left = False
+        if arr[left_start] <= target:
+            in_left = True
     
-    # TODO: Determine which half (before or after rotation_index) the target belongs to.
     
-    def binary_search(arr, left, right, target):
+    def binary_search(arr: list[int], left: int, right: int, target: int) -> bool:
         """
         Performs a binary search on a sorted array within the specified range.
         
@@ -31,9 +49,21 @@ def binary_search_rotated(arr, target, rotation_index):
         :return: bool - True if the target is in the array, False otherwise.
         """
         # TODO: Implement standard binary search logic.
-        
+        while left <= right:
+            mid = (left + right) // 2
+            if arr[mid] == target:
+                return True
+            elif arr[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
         return False
     
     # TODO: Perform binary search on the appropriate half using the nested function.
+    ret = False
+    if in_left:
+        ret = binary_search(arr, left_start, left_end, target)
+    else:
+        ret = binary_search(arr, right_start, right_end, target)
     
-    return False  # TODO: Replace this with actual return value
+    return ret  # TODO: Replace this with actual return value
